@@ -1,0 +1,17 @@
+# Папка виртуального окружения
+.venv/
+
+# Системные файлы PyCharm
+.idea/
+
+# Кэш Python
+__pycache__/
+*.pyc
+
+# Файлы с результатами выполнения скриптов
+# Их не нужно хранить в Git, так как они генерируются кодом
+vacancy_urls.txt
+vacancies_data.json
+ranked_vacancies.json
+rejected_vacancies.json
+cover_letters.md
