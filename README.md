@@ -3,7 +3,7 @@
 
 # 🤖 Agentic Pipeline: Automated Job Scoring & AI Generation
 
-**Autonomous AI Agent for HeadHunter (API)** — is a multi-stage data pipeline designed to automate the process of parsing, scoring, and analyzing large volumes of unstructured job market data. It utilizes Google Gemini (LLM) to make complex semantic decisions based on custom engineering filters.
+**Autonomous AI Agent for HeadHunter (API)** - is a multi-stage data pipeline designed to automate the process of parsing, scoring, and analyzing large volumes of unstructured job market data. It utilizes Google Gemini (LLM) to make complex semantic decisions based on custom engineering filters.
 
 ![Python 3.9+](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Google Gemini](https://img.shields.io/badge/Google%20Gemini-LLM-4285F4?style=for-the-badge&logo=google&logoColor=white)
