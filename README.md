@@ -1,123 +1,121 @@
 
----
-# Персональный ИИ-рекрутер для HeadHunter
 
-Этот проект представляет собой автоматизированный конвейер для поиска, анализа и генерации откликов на вакансии с сайта HeadHunter. Он экономит десятки часов ручного труда, позволяя сосредоточиться только на самых релевантных и перспективных предложениях.
+🤖 Agentic Pipeline: Automated Job Scoring & AI Generation
 
-## Концепция
+Autonomous AI Agent for HeadHunter (API) — is a multi-stage data pipeline designed to automate the process of parsing, scoring, and analyzing large volumes of unstructured job market data. It utilizes Google Gemini (LLM) to make complex semantic decisions based on custom engineering filters.
 
-Идея проекта — создать личного ассистента, который:
-1.  **Находит** все свежие вакансии по вашим детальным фильтрам.
-2.  **Анализирует** каждую из них с помощью умной системы скоринга, основанной на ваших навыках и предпочтениях.
-3.  **Отсеивает** 90% неподходящих предложений.
-4.  **Передает** лучшие вакансии на глубокий анализ нейросети Google Gemini.
-5.  **Генерирует** сильные, персонализированные сопроводительные письма, готовые к отправке (или почти :3).
+![alt text](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
-## Как это работает: Конвейер из 4 шагов
 
-Проект состоит из четырех последовательных скриптов, каждый из которых выполняет свою задачу и готовит данные для следующего.
+![alt text](https://img.shields.io/badge/Google%20Gemini-LLM-4285F4?style=for-the-badge&logo=google&logoColor=white)
 
-1.  **Шаг 1: Сбор ссылок (`step1_get_urls.py`)**
-    -   Подключается к официальному API HeadHunter.
-    -   Запрашивает все вакансии, соответствующие заданным в коде фильтрам (должность, регион, опыт, график и т.д.).
-    -   Собирает прямые ссылки на эти вакансии и сохраняет их в `vacancy_urls.txt`.
 
-2.  **Шаг 2: Извлечение данных (`step2_get_details.py`)**
-    -   Читает ссылки из `vacancy_urls.txt`.
-    -   Для каждой ссылки делает повторный запрос к API, чтобы получить полную информацию о вакансии (включая полное описание в HTML-формате).
-    -   Очищает описание от HTML-тегов, оставляя только чистый текст.
-    -   Сохраняет структурированные данные (название, компания, зарплата, чистое описание) в файл `vacancies_data.json`.
+![alt text](https://img.shields.io/badge/Architecture-Data%20Pipeline-blue?style=for-the-badge)
 
-3.  **Шаг 3: Интеллектуальный скоринг (`step3_analyze.py`)**
-    -   Это "мозг" нашего первичного фильтра. Скрипт читает данные из `vacancies_data.json`.
-    -   Для каждой вакансии он вычисляет "рейтинг соответствия" (score) по заданным правилам:
-        -   **Начисляет баллы** за ключевые навыки (`Python`, `Selenium`, `API`) и "золотые" фразы (`с нуля`, `единственный QA`).
-        -   **Начисляет штрафные баллы** за нерелевантные технологии (`Java`, `C#`) или роли (`Lead`, `Руководитель`).
-    -   Сортирует все вакансии по убыванию рейтинга и сохраняет их в `ranked_vacancies.json`.
 
-4.  **Шаг 4: Генерация писем с ИИ (`step4_generate_letters.py`)**
-    -   Берет **N лучших** вакансий из `ranked_vacancies.json`.
-    -   Формирует детализированный промпт для нейросети Google Gemini, который включает:
-        -   Ваш профиль кандидата (резюме).
-        -   Вашу стратегию анализа ("красные" и "зеленые" флаги).
-        -   Текст конкретной вакансии.
-    -   Отправляет запрос и получает готовый результат: вердикт ("Подходит" / "Не подходит") и, если нужно, идеально составленное сопроводительное письмо.
-    -   Сохраняет все результаты в один удобный файл `cover_letters.md`.
+![alt text](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-## Установка и настройка
+"Automating cognitive load: from unstructured HTML to AI-driven semantic decision making."
 
-Для работы проекта требуется Python 3.9+ и несколько внешних библиотек.
+🏛 Architecture: 4-Stage Autonomous Workflow
 
-**1. Клонируйте репозиторий**
-```bash
-git clone <URL вашего репозитория>
-cd <название папки>
-```
+This project is structured as a robust Data Engineering Pipeline. Each script acts as a micro-service, handling a specific state of data transformation before passing it to the Large Language Model.
 
-**2. Создайте и активируйте виртуальное окружение**
-Это стандартная лучшая практика, чтобы не засорять системные библиотеки.
-```bash
-# Создание
+🔄 Stage 1: API Ingestion (step1_get_urls.py)
+
+Connects to the official HeadHunter REST API.
+
+Executes complex search queries based on hardcoded engineering filters (role, region, experience, schedule).
+
+Outputs structured endpoints for deep-dive extraction.
+
+🧹 Stage 2: Data Extraction & Sanitization (step2_get_details.py)
+
+Performs secondary API calls to retrieve full JSON payloads for each endpoint.
+
+Sanitizes the data by stripping raw HTML tags from the descriptions using BeautifulSoup4.
+
+Outputs a clean, structured vacancies_data.json dataset.
+
+🧠 Stage 3: Algorithmic Scoring (step3_analyze.py)
+
+Acts as the Deterministic Filter Engine before invoking the LLM (saving token costs).
+
+Applies a custom weighted scoring algorithm based on targeted technical stacks (e.g., Python, Selenium, API) and "Golden Keywords".
+
+Applies penalty scores for irrelevant tech stacks (e.g., Java, C#) or misaligned roles.
+
+Outputs ranked_vacancies.json, sorted by highest relevance probability.
+
+🤖 Stage 4: LLM Semantic Analysis (step4_generate_letters.py)
+
+The final stage acts as an AI Agent. It takes the top-N results from the ranked dataset and feeds them into Google Gemini.
+
+Prompt Engineering: The LLM is provided with a strict system prompt containing the candidate's profile, "Red/Green flags" strategy, and the raw job description.
+
+Output: The LLM acts as an evaluator, returning a binary verdict ("Fit" / "No Fit") and generating a highly personalized, context-aware cover letter in Markdown format.
+
+🛠 Technical Stack
+
+Language: Python 3.9+
+
+Data Extraction: requests, beautifulsoup4
+
+LLM Integration: google-generativeai (Gemini API)
+
+Data Serialization: JSON, Markdown
+
+🚀 Setup & Execution
+1. Environment Initialization
+code
+Bash
+download
+content_copy
+expand_less
+git clone https://github.com/SanMog/HeadHunter-AI-Assistant.git
+cd HeadHunter-AI-Assistant
+
 python -m venv .venv
+# Windows PowerShell: .venv\Scripts\Activate.ps1
+# Linux/macOS: source .venv/bin/activate
 
-# Активация (Windows PowerShell)
-.venv\Scripts\Activate.ps1
-
-# Активация (Windows CMD)
-.venv\Scripts\activate.bat
-```
-
-**3. Создайте файл `requirements.txt`**
-Создайте в корне проекта файл `requirements.txt` и добавьте в него следующие строки:
-```
-requests
-beautifulsoup4
-google-generativeai
-```
-
-**4. Установите зависимости**
-Выполните в терминале с активированным окружением:
-```bash
 pip install -r requirements.txt
-```
+2. API Security
 
-**5. Настройте API-ключ для Google Gemini**
--   Перейдите в [Google AI Studio](https://aistudio.google.com/) и получите свой API-ключ.
--   **НИКОГДА не вставляйте ключ прямо в код!** Используйте переменные окружения. Перед запуском Шага 4 выполните в терминале:
+Never hardcode API keys. The system expects the Google Gemini API key to be passed securely via environment variables.
 
-    ```powershell
-    # Для Windows PowerShell
-    $env:GOOGLE_API_KEY = "ВАШ_СКОПИРОВАННЫЙ_API_КЛЮЧ"
-    ```
+code
+Powershell
+download
+content_copy
+expand_less
+# Windows PowerShell
+$env:GOOGLE_API_KEY = "YOUR_GEMINI_API_KEY"
 
-## Порядок использования
+# Linux/macOS
+export GOOGLE_API_KEY="YOUR_GEMINI_API_KEY"
+3. Pipeline Execution
 
-1.  **Настройте фильтры поиска**
-    -   Откройте `step1_get_urls.py`.
-    -   Отредактируйте словарь `my_search_params`, указав нужную должность, регион и другие параметры.
+Run the pipeline sequentially to process the data:
 
-2.  **Запустите скрипты поочередно**
-    ```bash
-    python step1_get_urls.py
-    python step2_get_details.py
-    python step3_analyze.py
-    ```
+code
+Bash
+download
+content_copy
+expand_less
+python step1_get_urls.py
+python step2_get_details.py
+python step3_analyze.py
+python step4_generate_letters.py
+⚙️ Customization (Configuring the "Brain")
 
-3.  **Настройте и запустите финальный анализ**
-    -   Откройте `step4_generate_letters.py`.
-    -   Укажите, сколько вакансий из топа вы хотите проанализировать (`PROCESS_N_VACANCIES`) и с какой начать (`START_FROM_VACANCY`).
-    -   Установите API-ключ в терминале (см. пункт 5 установки).
-    -   Запустите скрипт:
-        ```bash
-        python step4_generate_letters.py
-        ```
+The scoring engine is highly decoupled and can be tuned for any engineering role:
 
-4.  **Изучите результат**
-    -   Откройте файл `cover_letters.md`. В нем будут анализ и готовые сопроводительные письма для лучших вакансий.
+Weights & Penalties: Edit SKILLS_KEYWORDS, GOLDEN_KEYWORDS, and PENALTY_KEYWORDS in step3_analyze.py to adjust the deterministic scoring algorithm.
 
-## Кастомизация
+LLM Persona: Modify the PROMPT_TEMPLATE in step4_generate_letters.py to dictate the AI's analytical behavior and writing style.
 
-Вы можете легко настроить "мозг" системы под себя:
--   **Ключевые навыки и "золотые" слова:** Отредактируйте словари `SKILLS_KEYWORDS` и `GOLDEN_KEYWORDS` в файле `step3_analyze.py`, чтобы изменить систему начисления баллов.
--   **Штрафы:** Настройте словарь `PENALTY_KEYWORDS` в том же файле, чтобы точнее отсеивать нерелевантные вакансии.
--   **Промпт для ИИ:** Измените шаблон `PROMPT_TEMPLATE` в файле `step4_generate_letters.py`, чтобы скорректировать стиль или содержание генерируемых писем.
+Architect: SanMog
+Domain: AI Automation / Agentic Workflows
+License: MIT
+
