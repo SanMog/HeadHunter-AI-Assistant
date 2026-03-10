@@ -93,7 +93,7 @@ The scoring engine is highly decoupled and can be tuned for any engineering role
 
 ---
 
-**Architect:** SanMog 
+**Architect:** SanMog  
 **Domain:** AI Automation / Agentic Workflows  
 **License:** MIT  
 
