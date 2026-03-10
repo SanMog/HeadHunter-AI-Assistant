@@ -1,10 +1,4 @@
 
----
-
-### 🚀 Готовый README.md для HeadHunter-AI-Assistant
-
-Скопируй этот код и замени текущий README в репозитории.
-
 ***
 
 # 🤖 Agentic Pipeline: Automated Job Scoring & AI Generation
